@@ -1,6 +1,6 @@
 # HandMimicArm
 Códigos desenvolvidos para projetos com o braço robô
-
+<!-- ![Conexões](LINK PARA O LOGO DA ASIMO) -->
 
 ## Tabela de conteúdos
 - [Introdução](#introdução)
@@ -53,7 +53,7 @@ pip install mediapipe opencv-python pyfirmata2
 Sketch > Include Library > Manage Libraries > Filtre por: "Firmata" > Selecione a versão mais recente de: Firmata by Firmata Developers > Instale > Carregue o sketch "StandardFirmata"
 
 5. **Faça as conexões de seu braço robótico seguindo a imagem abaixo**:
-<!-- ![Conexões](LINK IMAGEM) -->
+<!-- ![Conexões](LINK IMAGEM DE CONEXÕES) -->
 
 6. **Execute o script Python que controlorá o braço robótico com base em seus gestos de mão**:
 ```bash
