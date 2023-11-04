@@ -31,12 +31,10 @@ Para executar este projeto, você precisará dos seguintes itens:
 
 
 ## Estrutura do projeto
-
-
-### Arduino
-
-
-### Python
+A estrutura deste projeto pode ser dividida em algumas partes, como por exemplo, tal que os diretórios possuem a seguinte configuração:
+- `src`: contém todos os arquivos de código do projeto
+- `src/control`: contém os arquivos referentes ao controle do braço robótico
+- `src/model`: contém o arquivo referente ao modelo de detecção da mão utilizado no projeto
 
 
 ## Aplicação e como utilizar
@@ -45,18 +43,18 @@ Para utilizar o projeto, é preciso seguir os seguintes passos:
 ```bash
 git clone https://github.com/Fundacao-Asimo/RoboArm.git
 ```
-2. **Instale Python em seu computador**:
+2. **Instale Python em seu computador**: <br/>
 Caso ainda não tenha instalado, é possível encontrar informações por meio do seguinte link: [download Python](https://www.python.org/downloads/)
 3. **Instale as bibliotecas necessárias em Python**:
 ```bash
 pip install mediapipe opencv-python pyfirmata2
 ```
-4. **Carregue o sketch "StandardFirmata" em seu Arduino pela Arduino IDE**:
-```bash
-```
-5. **Faça as conexões de seu braço robótico**:
-```bash
-```
+4. **Carregue o sketch "StandardFirmata" em seu Arduino pela Arduino IDE seguindo os seguintes passos**: <br/>
+Sketch > Include Library > Manage Libraries > Filtre por: "Firmata" > Selecione a versão mais recente de: Firmata by Firmata Developers > Instale > Carregue o sketch "StandardFirmata"
+
+5. **Faça as conexões de seu braço robótico seguindo a imagem abaixo**:
+<!-- ![Conexões](LINK IMAGEM) -->
+
 6. **Execute o script Python que controlorá o braço robótico com base em seus gestos de mão**:
 ```bash
 python src/main.py
@@ -66,10 +64,11 @@ python src/main.py
 
 ## Documentação e referências
 - [Braço robótico](https://www.robocore.net/robotica-robocore/braco-robotico-roboarm): neste link, estão todas as informações sobre o braço robótico utilizado durante o projeto
+- [Firmata para o Arduino](https://github.com/firmata/arduino): neste link, estão todas as informações sobre a biblioteca Firmata para o Arduino
 - [Inspiração para o projeto](https://www.youtube.com/watch?v=gdOV1OYF1Go): neste link, é encontrada a inspiração inicial para a realização do projeto
 - [MediaPipe](https://developers.google.com/mediapipe): aqui estão mais informações sobre a biblioteca MediaPipe para Python
 - [OpenCV](https://opencv.org/): aqui estão mais informações sobre a biblioteca OpenCV para Python
-- pyFirmata: aqui estão mais informações sobre a biblioteca pyFirmata2 para Python
+- pyFirmata2: aqui estão mais informações sobre a biblioteca pyFirmata2 para Python
 
 ## Licença
 
