@@ -1,12 +1,11 @@
 import os
-
-root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.sys.path.insert(0, root_dir)
-
 import cv2
 import numpy as np
 import time
 import sys
+
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.sys.path.insert(0, root_dir)
 
 from src.model.HandTracker import HandTracker
 
@@ -22,8 +21,8 @@ def main() -> None:
     )
 
     cap = cv2.VideoCapture(0)
-    dists = []
-    dist_real = [i for i in range(5, 100, 5)]
+    cap.set(3, 1280)
+    cap.set(4, 720)
 
     while True:
         success, image = cap.read()
@@ -38,7 +37,7 @@ def main() -> None:
         try:
             image = tracker.detect(image, draw=True)
 
-            dist_pixel= tracker.get_approximate_depth()
+            dist_pixel = tracker.get_approximate_depth()
 
             print(dist_pixel)
         except Exception as e:
