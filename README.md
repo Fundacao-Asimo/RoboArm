@@ -49,10 +49,10 @@ Caso ainda não tenha instalado, é possível encontrar informações por meio d
 pip install -r requirements.txt
 ```
 4. **Carregue o sketch "StandardFirmata" em seu Arduino pela Arduino IDE seguindo os seguintes passos**: <br/>
-Sketch > Include Library > Manage Libraries > Filtre por: "Firmata" > Selecione a versão mais recente de: Firmata by Firmata Developers > Instale > Carregue o sketch "StandardFirmata" <br/>
+Sketch > Include Library > Manage Libraries > Filtre por: "Firmata" > Selecione a versão mais recente de: Firmata by Firmata Developers > Instale > Carregue o sketch "StandardFirmata" <br/> <br/>
 ![Passos](res/firmata.png)
 
-5. **Faça as conexões de seu braço robótico seguindo a imagem abaixo**: <br/>
+5. **Faça as conexões de seu braço robótico seguindo a imagem abaixo**: <br/> <br/>
 ![Conexões](res/ligacoesRoboArm.png)
 
 6. **Execute o script Python que controlorá o braço robótico com base em seus gestos de mão**:
