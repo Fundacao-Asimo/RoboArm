@@ -1,5 +1,5 @@
 # HandMimicArm
-![LogoAsimo]()
+![LogoAsimo](res/logoAsimo.png)
 
 
 ## Introdução
