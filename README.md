@@ -1,5 +1,5 @@
 # HandMimicArm
-<!-- ![Conexões](LINK PARA O LOGO DA ASIMO) -->
+![LogoAsimo]()
 
 
 ## Introdução
@@ -50,9 +50,10 @@ pip install -r requirements.txt
 ```
 4. **Carregue o sketch "StandardFirmata" em seu Arduino pela Arduino IDE seguindo os seguintes passos**: <br/>
 Sketch > Include Library > Manage Libraries > Filtre por: "Firmata" > Selecione a versão mais recente de: Firmata by Firmata Developers > Instale > Carregue o sketch "StandardFirmata"
+![Passos](res/firmata.png)
 
 5. **Faça as conexões de seu braço robótico seguindo a imagem abaixo**:
-<!-- ![Conexões](LINK IMAGEM DE CONEXÕES) -->
+![Conexões](res/ligacoesRoboArm.png)
 
 6. **Execute o script Python que controlorá o braço robótico com base em seus gestos de mão**:
 ```bash
@@ -110,7 +111,7 @@ A estrutura deste projeto pode ser dividida em algumas partes, como por exemplo,
 - `src`: contém todos os arquivos de código do projeto
 - `src/control`: contém os arquivos referentes ao controle do braço robótico
 - `src/model`: contém o arquivo referente ao modelo de detecção da mão utilizado no projeto
-- `requirements.txt`: contém todas as bibliotecas Python necessárias para a utilização do projeto 
+- `requirements.txt`: contém todas as bibliotecas Python necessárias para a utilização do projeto
 
 
 ## Aplicação e como utilizar
