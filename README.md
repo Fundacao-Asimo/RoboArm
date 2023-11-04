@@ -1,12 +1,14 @@
 # HandMimicArm
-![LogoAsimo](res/logoAsimo.png)
-
+<p align = "middle">
+  <img src = "res/logoAsimo.png" alt = "LogoAsimo" width = "300" height = "400"/>
+</p>
 
 ## Introdução
 O projeto HandMimicArm permite que você controle um braço robótico de 4 graus de liberdade (DOF) usando gestos da mão detectados por meio de uma webcam e um script Python em seu PC local.
 Este projeto combina técnicas de visão computacional, um Arduino e um braço com 4 servo-motores.
 Este projeto utiliza as bibliotecas MediaPipe para a detecção de pontos de referência da mão, a OpenCV para processamento de imagens e a pyFirmata2 para comunicação com o Arduino.
 Para a realização deste projeto, utilizamos o [braço robótico de 4 DOF da RoboCore](https://www.robocore.net/robotica-robocore/braco-robotico-roboarm) em conjunto com um Arduino Uno.
+
 
 ## Tabela de conteúdos
 - [Introdução](#introdução)
@@ -71,8 +73,8 @@ python .src/main.py
 - [OpenCV](https://opencv.org/): aqui estão mais informações sobre a biblioteca OpenCV para Python
 - [pyFirmata2](https://pypi.org/project/pyFirmata2/): aqui estão mais informações sobre a biblioteca pyFirmata2 para Python
 
-## Licença
 
+## Licença
 Este projeto é de código aberto e distribuído sob a Licença MIT. Sinta-se à vontade para usá-lo, modificar e distribuir conforme necessário. Se você achar este projeto útil, agradecemos suas contribuições e feedback.
 
 Se você tiver alguma dúvida ou encontrar problemas, por favor, não hesite em abrir um problema ou entrar em contato conosco.
