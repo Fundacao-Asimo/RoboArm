@@ -1,18 +1,47 @@
 import os
-
-root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-os.sys.path.insert(0, root_dir)
-
 import cv2
 import numpy as np
 import time
 import sys
-import threading
-
 from pyfirmata2 import Arduino
+
+root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.sys.path.insert(0, root_dir)
 
 from src.model.HandTracker import HandTracker
 from src.control.RoboArm import RoboArm
+
+
+def draw_rect_fancy(image, pt1, pt2, color, thickness, r=20, d=20):
+    """
+    Draw a rectangle with rounded corners.
+
+    Args:
+        image (np.ndarray): The image to draw on.
+        pt1 (tuple): The top left corner of the rectangle.
+        pt2 (tuple): The bottom right corner of the rectangle.
+        color (tuple): The color of the rectangle.
+        thickness (int): The thickness of the rectangle.
+    """
+    x1, y1 = pt1
+    x2, y2 = pt2
+    # Draw the rectangle with rounded corners
+    # Top left
+    cv2.line(image, (x1 + r, y1), (x1 + r + d, y1), color, thickness)
+    cv2.line(image, (x1, y1 + r), (x1, y1 + r + d), color, thickness)
+    cv2.ellipse(image, (x1 + r, y1 + r), (r, r), 180, 0, 90, color, thickness)
+    # Top right
+    cv2.line(image, (x2 - r, y1), (x2 - r - d, y1), color, thickness)
+    cv2.line(image, (x2, y1 + r), (x2, y1 + r + d), color, thickness)
+    cv2.ellipse(image, (x2 - r, y1 + r), (r, r), 270, 0, 90, color, thickness)
+    # Bottom left
+    cv2.line(image, (x1 + r, y2), (x1 + r + d, y2), color, thickness)
+    cv2.line(image, (x1, y2 - r), (x1, y2 - r - d), color, thickness)
+    cv2.ellipse(image, (x1 + r, y2 - r), (r, r), 90, 0, 90, color, thickness)
+    # Bottom right
+    cv2.line(image, (x2 - r, y2), (x2 - r - d, y2), color, thickness)
+    cv2.line(image, (x2, y2 - r), (x2, y2 - r - d), color, thickness)
+    cv2.ellipse(image, (x2 - r, y2 - r), (r, r), 0, 0, 90, color, thickness)
 
 
 class HandFollowerController:
@@ -34,7 +63,7 @@ class HandFollowerController:
         follow_hand(landmark: int = 0): Control the RoboArm to follow the detected hand
     """
 
-    def __init__(self, port: str, model: str, image_shape: tuple = (640, 480)) -> None:
+    def __init__(self, port: str, model: str, image_shape: tuple = (480, 640)) -> None:
         """
         Initialize the HandFollowerController class.
 
@@ -72,8 +101,11 @@ class HandFollowerController:
         # Set webcam parameters
         self.image_shape = image_shape
         self.cap = cv2.VideoCapture(0)
-        self.cap.set(3, self.image_shape[1])
-        self.cap.set(4, self.image_shape[0])
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.image_shape[1])
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.image_shape[0])
+        self.cap.set(cv2.CAP_PROP_FPS, 30)
+
+        self.track_limits = [[40, self.image_shape[1] - 40], [50, self.image_shape[0] - 50]]
 
     def loop(self) -> None:
         """
@@ -95,6 +127,7 @@ class HandFollowerController:
                 image = self.tracker.detect(image, draw=True)
                 self.follow_hand()
                 self.draw_info(image)
+                self.draw_limits_rectangle(image)
             except Exception as e:
                 print(e)
 
@@ -110,14 +143,15 @@ class HandFollowerController:
         Clean up resources and close the webcam and detector.
         """
         self.tracker.detector.close()
+        self.board.exit()
         self.cap.release()
         cv2.destroyAllWindows()
 
     def draw_info(
-        self,
-        image: np.ndarray,
-        rect_color: tuple = (255, 51, 51),
-        text_color: tuple = (0, 128, 255),
+            self,
+            image: np.ndarray,
+            rect_color: tuple = (255, 51, 51),
+            text_color: tuple = (0, 128, 255),
     ) -> None:
         """
         Draw a rectangle and servo angle information on the image.
@@ -137,23 +171,7 @@ class HandFollowerController:
 
         # Draw the rectangle with rounded corners
         r, d, thickness = 20, 20, 3
-        # Top left
-        cv2.line(image, (x1 + r, y1), (x1 + r + d, y1), rect_color, thickness)
-        cv2.line(image, (x1, y1 + r), (x1, y1 + r + d), rect_color, thickness)
-        cv2.ellipse(image, (x1 + r, y1 + r), (r, r), 180, 0, 90, rect_color, thickness)
-        # Top right
-        cv2.line(image, (x2 - r, y1), (x2 - r - d, y1), rect_color, thickness)
-        cv2.line(image, (x2, y1 + r), (x2, y1 + r + d), rect_color, thickness)
-        cv2.ellipse(image, (x2 - r, y1 + r), (r, r), 270, 0, 90, rect_color, thickness)
-        # Bottom left
-        cv2.line(image, (x1 + r, y2), (x1 + r + d, y2), rect_color, thickness)
-        cv2.line(image, (x1, y2 - r), (x1, y2 - r - d), rect_color, thickness)
-        cv2.ellipse(image, (x1 + r, y2 - r), (r, r), 90, 0, 90, rect_color, thickness)
-        # Bottom right
-        cv2.line(image, (x2 - r, y2), (x2 - r - d, y2), rect_color, thickness)
-        cv2.line(image, (x2, y2 - r), (x2, y2 - r - d), rect_color, thickness)
-        cv2.ellipse(image, (x2 - r, y2 - r), (r, r), 0, 0, 90, rect_color, thickness)
-
+        draw_rect_fancy(image, (x1, y1), (x2, y2), rect_color, thickness, r, d)
         # Set the initial position of the text inside the rectangle
         text_x, text_y = x1 + int(w * 0.09), y1 + int(h * 0.25)
         # Write each line of text on the image
@@ -167,6 +185,17 @@ class HandFollowerController:
                 text_color,
                 2,
             )
+
+    def draw_limits_rectangle(self, image):
+        # Define origin point and rectangle size
+        x1, y1 = self.track_limits[0][0], self.track_limits[1][0]
+        x2, y2 = self.track_limits[0][1], self.track_limits[1][1]
+        w, h = x2 - x1, y2 - y1
+        rect_color: tuple = (255, 51, 51)
+
+        # Draw rectangle in the track limits
+        draw_rect_fancy(image, (x1, y1), (x2, y2), rect_color, 2, 20, 20)
+        #cv2.rectangle(image, (x1, y1), (x2, y2), rect_color, 2, lineType=cv2.LINE_AA)
 
     def follow_hand(self, landmark: int = 0) -> None:
         """
@@ -188,7 +217,7 @@ class HandFollowerController:
             self.servos_values["base"] = int(
                 np.interp(
                     x * self.image_shape[1],
-                    [0, self.image_shape[1]],
+                    self.track_limits[0],
                     [
                         self.controller.servos["Base"].get_limit(1),
                         self.controller.servos["Base"].get_limit(0),
@@ -198,7 +227,7 @@ class HandFollowerController:
             self.servos_values["height"] = int(
                 np.interp(
                     y * self.image_shape[0],
-                    [0, self.image_shape[0]],
+                    self.track_limits[1],
                     [
                         self.controller.servos["Height"].get_limit(1),
                         self.controller.servos["Height"].get_limit(0),
@@ -208,7 +237,7 @@ class HandFollowerController:
             self.servos_values["reach"] = int(
                 np.interp(
                     z,
-                    [30, 120],
+                    [20, 80],
                     [
                         self.controller.servos["Reach"].get_limit(1),
                         self.controller.servos["Reach"].get_limit(0),
@@ -236,7 +265,7 @@ def main() -> None:
     port = Arduino.AUTODETECT  # Change to match your Arduino port
     model = os.path.join(root_dir, "res", "hand_landmarker.task")
 
-    controller = HandFollowerController(port, model=model, image_shape=image_shape)
+    controller = HandFollowerController(port, model=model)
     controller.loop()
 
 

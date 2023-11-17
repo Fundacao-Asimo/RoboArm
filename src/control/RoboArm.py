@@ -32,7 +32,7 @@ class RoboArm:
     PIN_CLAW = 11
 
     SERVOS_LIMITS = {
-        "Base": [0, 180],
+        "Base": [10, 170],
         "Reach": [60, 160],
         "Height": [70, 170],
         "Claw": [100, 170],
@@ -55,7 +55,7 @@ class RoboArm:
             self.servos[name].set_limit(0, limits[0])
             self.servos[name].set_limit(1, limits[1])
             if name == "Base":
-                self.servos[name].attach(50)
+                self.servos[name].attach(60)
             else:
                 self.servos[name].attach()
 
