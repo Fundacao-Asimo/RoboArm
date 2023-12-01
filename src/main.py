@@ -22,6 +22,9 @@ def draw_rect_fancy(image, pt1, pt2, color, thickness, r=20, d=20):
         pt2 (tuple): The bottom right corner of the rectangle.
         color (tuple): The color of the rectangle.
         thickness (int): The thickness of the rectangle.
+        r (int): The radius of the rounded corners.
+        d (int): The offset of the rounded corners.
+
     """
     x1, y1 = pt1
     x2, y2 = pt2
@@ -59,7 +62,7 @@ class HandFollowerController:
     Methods:
         loop(): Main loop for tracking and controlling the RoboArm
         clear(): Clean up resources and close the webcam and detector
-        draw_info(image, rect_color=(255, 51, 51), text_color=(0, 128, 255)): Draw a rectangle and servo angle information on the image
+        draw_info(image, rect_color=(255, 51, 51), text_color=(0, 128, 255)): Draw servo angle information on the image
         follow_hand(landmark: int = 0): Control the RoboArm to follow the detected hand
     """
 
@@ -161,19 +164,9 @@ class HandFollowerController:
             rect_color (tuple): The color of the rectangle.
             text_color (tuple): The color of the text.
         """
-        # Get the height and width of the image
-        height, width = self.image_shape
-
-        # Define origin point and rectangle size
-        x1, y1 = int(width * 0.021), int(height * 0.5)
-        w, h = 180, 150
-        x2, y2 = x1 + w, y1 + h
-
-        # Draw the rectangle with rounded corners
-        r, d, thickness = 20, 20, 3
-        draw_rect_fancy(image, (x1, y1), (x2, y2), rect_color, thickness, r, d)
-        # Set the initial position of the text inside the rectangle
-        text_x, text_y = x1 + int(w * 0.09), y1 + int(h * 0.25)
+        # Set the initial position of the text
+        text_x, text_y = 55, 325
+        
         # Write each line of text on the image
         for i, (name, servo) in enumerate(self.controller.servos.items()):
             cv2.putText(
@@ -190,12 +183,11 @@ class HandFollowerController:
         # Define origin point and rectangle size
         x1, y1 = self.track_limits[0][0], self.track_limits[1][0]
         x2, y2 = self.track_limits[0][1], self.track_limits[1][1]
-        w, h = x2 - x1, y2 - y1
+
         rect_color: tuple = (255, 51, 51)
 
         # Draw rectangle in the track limits
         draw_rect_fancy(image, (x1, y1), (x2, y2), rect_color, 2, 20, 20)
-        #cv2.rectangle(image, (x1, y1), (x2, y2), rect_color, 2, lineType=cv2.LINE_AA)
 
     def follow_hand(self, landmark: int = 0) -> None:
         """
@@ -239,8 +231,8 @@ class HandFollowerController:
                     z,
                     [20, 80],
                     [
-                        self.controller.servos["Reach"].get_limit(1),
                         self.controller.servos["Reach"].get_limit(0),
+                        self.controller.servos["Reach"].get_limit(1),
                     ],
                 )
             )
@@ -261,8 +253,8 @@ class HandFollowerController:
 
 
 def main() -> None:
-    image_shape = (640, 480)  # Change to match your webcam resolution
-    port = Arduino.AUTODETECT  # Change to match your Arduino port
+    image_shape = (480, 640)  # Change to match your webcam resolution
+    port = Arduino.AUTODETECT
     model = os.path.join(root_dir, "res", "hand_landmarker.task")
 
     controller = HandFollowerController(port, model=model)
