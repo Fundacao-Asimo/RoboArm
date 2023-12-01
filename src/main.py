@@ -24,6 +24,7 @@ def draw_rect_fancy(image, pt1, pt2, color, thickness, r=20, d=20):
         thickness (int): The thickness of the rectangle.
         r (int): The radius of the rounded corners.
         d (int): The offset of the rounded corners.
+
     """
     x1, y1 = pt1
     x2, y2 = pt2
@@ -182,6 +183,7 @@ class HandFollowerController:
         # Define origin point and rectangle size
         x1, y1 = self.track_limits[0][0], self.track_limits[1][0]
         x2, y2 = self.track_limits[0][1], self.track_limits[1][1]
+
         rect_color: tuple = (255, 51, 51)
 
         # Draw rectangle in the track limits
@@ -255,7 +257,7 @@ def main() -> None:
     port = Arduino.AUTODETECT
     model = os.path.join(root_dir, "res", "hand_landmarker.task")
 
-    controller = HandFollowerController(port, model=model, image_shape=image_shape)
+    controller = HandFollowerController(port, model=model)
     controller.loop()
 
 
