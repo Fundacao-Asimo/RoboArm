@@ -26,13 +26,13 @@ class RoboArm:
         close(): Close all the servos
     """
 
-    PIN_BASE = 8
-    PIN_REACH = 9
-    PIN_HEIGHT = 10
-    PIN_CLAW = 11
+    PIN_BASE = 2
+    PIN_REACH = 3
+    PIN_HEIGHT = 4
+    PIN_CLAW = 5
 
     SERVOS_LIMITS = {
-        "Base": [10, 170],
+        "Base": [10, 140],
         "Reach": [60, 160],
         "Height": [70, 170],
         "Claw": [100, 170],
