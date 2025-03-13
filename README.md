@@ -1,6 +1,6 @@
 # HandMimicArm
 <p align = "middle">
-  <img src = "res/logoAsimo.png" alt = "LogoAsimo" width = "300" height = "400"/>
+  <img src = "res/logoAsimo_atualizada.png" alt = "LogoAsimo" width = "300" height = "400"/>
 </p>
 
 ## Introdução
